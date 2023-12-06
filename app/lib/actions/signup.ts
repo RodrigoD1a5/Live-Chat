@@ -1,5 +1,7 @@
 "use server";
+
 import { ZodError, z } from "zod";
+import { api } from "../api/axios";
 import { login } from "./login";
 
 const signUpSchema = z
@@ -16,15 +18,14 @@ const signUpSchema = z
 
 export async function signup(_prevState: any, formData: FormData) {
     try {
-        const data = signUpSchema.parse({
+        const { name, email, password } = signUpSchema.parse({
             name: formData.get("name"),
             email: formData.get("email"),
             password: formData.get("password"),
             confirmPassword: formData.get("confirmPassword"),
         });
 
-        /* Replace axios API request here to create a new user */
-        await new Promise((resolve) => setTimeout(() => resolve(data), 3000));
+        await api.post("/signup", { name, email, password });
     } catch (error) {
         if (error instanceof ZodError) {
             const errors = [];
@@ -44,7 +45,6 @@ export async function signup(_prevState: any, formData: FormData) {
                         break;
                 }
             }
-
             return { message: errors.join("\n") };
         }
         return { message: "Falha ao fazer cadastro." };
