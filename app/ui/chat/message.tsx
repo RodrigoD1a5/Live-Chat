@@ -1,17 +1,15 @@
 "use client";
-
 import clsx from "clsx";
 import dayjs from "dayjs";
 
 import { SessionContext } from "@/app/lib/contexts/session";
-import { Comment } from "@/app/lib/definitions";
+import { Message } from "@/app/lib/definitions";
 import { useContext } from "react";
 
-export function ChatComment({ user, content, createdAt }: Comment) {
+export function ChatMessage({ user, content, createdAt }: Message) {
     const { user: currentUser } = useContext(SessionContext);
 
     const isFromCurrentUser = user.id === currentUser?.id;
-
     return (
         <div
             className={clsx("flex items-end justify-start gap-3", {
@@ -21,7 +19,6 @@ export function ChatComment({ user, content, createdAt }: Comment) {
             <div className="mb-4 flex h-8 w-8 flex-shrink-0 items-center justify-center overflow-hidden rounded-full bg-black/50 font-bold text-white">
                 {user.name.charAt(0).toUpperCase()}
             </div>
-
             <div className="flex w-fit flex-col gap-1">
                 <p
                     className={clsx(
@@ -36,7 +33,6 @@ export function ChatComment({ user, content, createdAt }: Comment) {
                 >
                     {content}
                 </p>
-
                 <span
                     className={clsx("flex items-center gap-2 text-sm", {
                         "flex-row-reverse": isFromCurrentUser,

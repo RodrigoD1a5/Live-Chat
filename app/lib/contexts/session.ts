@@ -1,5 +1,5 @@
 import { createContext } from "react";
-import { User } from "./definitions";
+import { User } from "../definitions";
 
 export type SessionContextValue = {
     user: User | null;

@@ -5,7 +5,7 @@ export interface User {
     avatar?: string;
 }
 
-export interface Comment {
+export interface Message {
     id: string;
     user: Omit<User, "email">;
     content: string;
