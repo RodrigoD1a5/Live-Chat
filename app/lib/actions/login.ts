@@ -20,8 +20,8 @@ export async function login(_prevState: any, formData: FormData) {
                 () =>
                     resolve({
                         user: {
-                            id: "874faec2-cc31-4bf4-8999-4d33ac5a3ca8",
-                            name: "samuel",
+                            id: data.email,
+                            name: data.email,
                         },
                         token: "token-1",
                     }),

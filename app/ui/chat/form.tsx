@@ -1,19 +1,13 @@
 "use client";
 
-import { Forward } from "lucide-react";
-import { useCallback, useContext } from "react";
-import { useFormState } from "react-dom";
-
-import { sendMessage } from "@/app/lib/actions/sendMessage";
 import { ChatContext } from "@/app/lib/contexts/chat";
 import { SessionContext } from "@/app/lib/contexts/session";
-import { Message } from "@/app/lib/definitions";
+import { Forward } from "lucide-react";
+import { useCallback, useContext } from "react";
 
 export function ChatForm() {
-    const [state, dispatch] = useFormState(sendMessage, { message: "" });
-
+    const { sendMessage } = useContext(ChatContext);
     const { session } = useContext(SessionContext);
-    const { addMessage } = useContext(ChatContext);
 
     const submit = useCallback<React.FormEventHandler<HTMLFormElement>>(
         (e) => {
@@ -21,24 +15,19 @@ export function ChatForm() {
             e.preventDefault();
 
             const formData = new FormData(e.currentTarget);
-            formData.append("user", JSON.stringify(session.user));
-            formData.append("createdAt", new Date().toISOString());
-
             const data = Object.fromEntries(formData);
 
-            const placeholderMessage: Message = {
-                id: new Date().getTime().toString(),
+            const draft = {
                 user: session.user,
                 content: data.content.toString(),
-                createdAt: data.createdAt.toString(),
+                createdAt: new Date().toISOString(),
             };
 
-            addMessage(placeholderMessage);
-            dispatch(formData);
+            sendMessage(draft);
 
             e.currentTarget.reset();
         },
-        [session, addMessage, dispatch],
+        [sendMessage, session],
     );
 
     return (
@@ -48,12 +37,12 @@ export function ChatForm() {
                 className="flex w-full max-w-screen-md items-center gap-4 px-4 py-5 md:h-24"
             >
                 <input
+                    required
                     type="text"
                     name="content"
                     placeholder="Escreva uma mensagem..."
                     className="flex-1 rounded-full border border-slate-300 bg-lightGray px-4 py-2 outline-none placeholder:text-slate-400"
                 />
-
                 <button
                     type="submit"
                     className="flex items-center justify-center rounded-full bg-lightBlue px-4 py-2 md:gap-1"
