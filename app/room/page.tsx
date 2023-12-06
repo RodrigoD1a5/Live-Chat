@@ -1,4 +1,5 @@
 import { ChatComment } from "../ui/chat/comment";
+import { ChatForm } from "../ui/chat/form";
 
 const mock = [
     {
@@ -25,8 +26,8 @@ const mock = [
 
 export default function Page() {
     return (
-        <main className="text-darkGray flex h-screen w-full flex-col">
-            <ul className="flex flex-col gap-6 p-4">
+        <main className="text-darkGray flex h-screen w-full flex-col items-center">
+            <ul className="flex flex-1 flex-col gap-6 overflow-y-scroll p-4">
                 <li>
                     <ChatComment {...mock[0]} />
                 </li>
@@ -40,6 +41,8 @@ export default function Page() {
                     <ChatComment {...mock[1]} />
                 </li>
             </ul>
+
+            <ChatForm />
         </main>
     );
 }
