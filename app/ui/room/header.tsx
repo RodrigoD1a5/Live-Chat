@@ -2,16 +2,28 @@
 
 import { LogOut } from "lucide-react";
 import { useRouter } from "next/navigation";
-import { useContext } from "react";
+import { useCallback, useContext } from "react";
 
 import { ChatContext } from "@/app/lib/contexts/chat";
 import { SessionContext } from "@/app/lib/contexts/session";
+import { SocketContext } from "@/app/lib/contexts/socket";
 
 export function RoomHeader({ title }: { title: string }) {
-    const { onlineUsersCount, disconnect } = useContext(ChatContext);
+    const { onlineUsersCount } = useContext(ChatContext);
+    const { disconnect } = useContext(SocketContext);
     const { logout } = useContext(SessionContext);
 
     const router = useRouter();
+
+    const logoutAndDisconnect = useCallback(() => {
+        const response = window.confirm("Tem certeza que quer sair?");
+
+        if (response) {
+            logout();
+            disconnect();
+            router.push("/");
+        }
+    }, [logout, disconnect, router]);
 
     return (
         <header className="fixed left-0 top-0 z-10 flex w-full justify-center bg-white px-4 shadow-[rgba(17,_17,_26,_0.1)_0px_0px_16px]">
@@ -28,15 +40,9 @@ export function RoomHeader({ title }: { title: string }) {
                         </span>
                     </div>
                 </div>
+
                 <button
-                    onClick={() => {
-                        const response = window.confirm("Tem certeza que quer sair?");
-                        if (response) {
-                            logout();
-                            disconnect();
-                            router.push("/");
-                        }
-                    }}
+                    onClick={logoutAndDisconnect}
                     className="flex h-10 w-10 flex-col items-center justify-center rounded-full border border-slate-300 text-slate-400 transition-colors hover:border-red-500 hover:text-red-500"
                 >
                     <LogOut className="translate-x-[1px]" height={18} />
