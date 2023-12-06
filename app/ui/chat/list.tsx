@@ -1,10 +1,11 @@
 "use client";
 
+import { Loader } from "lucide-react";
+import { useContext, useEffect, useRef } from "react";
+
 import { ChatContext } from "@/app/lib/contexts/chat";
 import { SessionContext } from "@/app/lib/contexts/session";
 import { Message } from "@/app/lib/definitions";
-import { Loader } from "lucide-react";
-import { useContext, useEffect, useRef } from "react";
 import { ChatMessage } from "./message";
 
 export function ChatList() {
@@ -12,7 +13,7 @@ export function ChatList() {
     const { session } = useContext(SessionContext);
 
     return (
-        <ul className="scrollbar-hide flex max-w-screen-md flex-1 flex-col gap-6 overflow-y-scroll px-4 pb-8 pt-28">
+        <ul className="scrollbar-hide flex w-full max-w-screen-md flex-1 flex-col gap-6 overflow-y-scroll px-4 pb-8 pt-28">
             {session ? (
                 Array.from(messages).map((message) => {
                     return <ChatListItem key={message.id} message={message} />;
@@ -26,7 +27,7 @@ export function ChatList() {
     );
 }
 
-function ChatListItem({ message, key }: { message: Message; key: string }) {
+function ChatListItem({ message }: { message: Message }) {
     const itemRef = useRef<HTMLLIElement>(null);
 
     useEffect(() => {
@@ -34,7 +35,7 @@ function ChatListItem({ message, key }: { message: Message; key: string }) {
     }, []);
 
     return (
-        <li ref={itemRef} key={key}>
+        <li ref={itemRef}>
             <ChatMessage {...message} />
         </li>
     );

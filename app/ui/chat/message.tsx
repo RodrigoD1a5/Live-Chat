@@ -7,7 +7,6 @@ import { Message } from "@/app/lib/definitions";
 export function ChatMessage({ user, content, createdAt }: Message) {
     const { session } = useContext(SessionContext);
     const isFromCurrentUser = user.id === session?.user.id;
-
     return (
         <div
             className={clsx(
@@ -21,10 +20,11 @@ export function ChatMessage({ user, content, createdAt }: Message) {
             <div className="mb-4 hidden h-10 w-10 flex-shrink-0 items-center justify-center overflow-hidden rounded-full bg-black/50 font-bold text-white md:flex">
                 {user.name.charAt(0).toUpperCase()}
             </div>
-            <div className="flex w-fit flex-col gap-1">
+
+            <div className="flex w-full flex-col gap-1">
                 <p
                     className={clsx(
-                        "max-w-[90%] break-words p-4 shadow-[rgba(17,_17,_26,_0.1)_0px_0px_16px] md:max-w-[80%]",
+                        "w-fit max-w-[90%] break-words p-4 shadow-[rgba(17,_17,_26,_0.1)_0px_0px_16px] md:max-w-[80%]",
                         {
                             "rounded-r-3xl rounded-bl-md rounded-tl-3xl bg-white":
                                 !isFromCurrentUser,
