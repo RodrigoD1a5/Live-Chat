@@ -42,23 +42,28 @@ export function ChatForm() {
     );
 
     return (
-        <form
-            onSubmit={submit}
-            className="flex w-full items-center gap-4 bg-white px-4 py-5 shadow-[rgba(17,_17,_26,_0.1)_0px_0px_16px]"
-        >
-            <input
-                type="text"
-                name="content"
-                placeholder="Escreva uma mensagem..."
-                className="flex-1 rounded-full border border-darkGray/10 bg-lightGray px-4 py-2 outline-none placeholder:text-darkGray/50"
-            />
-
-            <button
-                type="submit"
-                className="flex h-full items-center justify-center rounded-full bg-lightBlue px-4"
+        <div className="flex w-full justify-center bg-white shadow-[rgba(17,_17,_26,_0.1)_0px_0px_16px]">
+            <form
+                onSubmit={submit}
+                className="flex w-full max-w-screen-md items-center gap-4 px-4 py-5 md:h-24"
             >
-                <Forward color="white" className="mb-1" />
-            </button>
-        </form>
+                <input
+                    type="text"
+                    name="content"
+                    placeholder="Escreva uma mensagem..."
+                    className="flex-1 rounded-full border border-darkGray/10 bg-lightGray px-4 py-2 outline-none placeholder:text-darkGray/50"
+                />
+
+                <button
+                    type="submit"
+                    className="flex items-center justify-center rounded-full bg-lightBlue px-4 py-2 md:gap-1"
+                >
+                    <span className="hidden font-semibold tracking-wide text-white md:block">
+                        SEND
+                    </span>
+                    <Forward color="white" className="mb-1 md:h-5" />
+                </button>
+            </form>
+        </div>
     );
 }

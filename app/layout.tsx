@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import { CookiesProvider } from "next-client-cookies/server";
-import "./globals.css";
 import { sfProDisplay } from "./ui/fonts";
+import "./ui/globals.css";
 
 export const metadata: Metadata = {
     title: "Live Chat",
@@ -15,7 +15,9 @@ export default function RootLayout({
     return (
         <CookiesProvider>
             <html lang="en">
-                <body className={`${sfProDisplay.className} bg-lightGray antialiased`}>
+                <body
+                    className={`${sfProDisplay.className} min-w-min bg-lightGray antialiased`}
+                >
                     {children}
                 </body>
             </html>
