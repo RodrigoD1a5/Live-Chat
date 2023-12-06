@@ -6,7 +6,6 @@ import {
   useEffect,
   useState,
 } from "react";
-
 import { Draft, Message } from "../definitions";
 import { selectRandomColor } from "../utils/selectRandomColor";
 import { SessionContext } from "./session";
@@ -14,6 +13,7 @@ import { SocketContext } from "./socket";
 
 export type ChatContextValue = {
   messages: Set<Message>;
+  setInitialMessages(messages: Set<Message>): void;
   colorMapping: Map<string, string>;
   onlineUsersCount: number;
   sendMessage(draft: Draft): void;
@@ -21,6 +21,7 @@ export type ChatContextValue = {
 
 export const ChatContext = createContext<ChatContextValue>({
   messages: new Set(),
+  setInitialMessages: () => { },
   colorMapping: new Map(),
   onlineUsersCount: 0,
   sendMessage: () => { },
@@ -35,10 +36,8 @@ export function ChatContextProvider({
   const [colorMapping, setColorMapping] = useState<Map<string, string>>(
     new Map(),
   );
-
   const { socket } = useContext(SocketContext);
   const { session } = useContext(SessionContext);
-
   const addMessageToLocalSet = useCallback(
     (message: Message) => {
       setMessages(new Set(messages.add(message)));
@@ -46,11 +45,19 @@ export function ChatContextProvider({
     [setMessages, messages],
   );
 
+  const setInitialMessages = useCallback<
+    ChatContextValue["setInitialMessages"]
+  >(
+    (messages) => {
+      setMessages(messages);
+    },
+    [setMessages],
+  );
+
   const sendMessage = useCallback<ChatContextValue["sendMessage"]>(
     (draft) => {
       if (socket && session) {
         socket.emit("message", JSON.stringify(draft));
-
         const message: Message = {
           id: new Date().getTime().toString(),
           content: draft.content,
@@ -64,13 +71,11 @@ export function ChatContextProvider({
             name: session.user.name,
           },
         };
-
         addMessageToLocalSet(message);
       }
     },
     [addMessageToLocalSet, socket, session],
   );
-
   useEffect(() => {
     if (socket) {
       socket.on("chat", (data: string) => {
@@ -92,6 +97,7 @@ export function ChatContextProvider({
     <ChatContext.Provider
       value={{
         messages,
+        setInitialMessages,
         sendMessage,
         onlineUsersCount,
         colorMapping,
