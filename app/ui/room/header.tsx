@@ -1,10 +1,16 @@
 "use client";
 
+import { SessionContext } from "@/app/lib/contexts/session";
 import { LogOut } from "lucide-react";
+import { useRouter } from "next/navigation";
+import { useContext } from "react";
 
 export function RoomHeader({ title }: { title: string }) {
+    const { logout } = useContext(SessionContext);
+    const router = useRouter();
+
     return (
-        <header className="text-darkGray fixed left-0 top-0 z-10 flex h-20 w-full items-center justify-between bg-white px-4 shadow-[rgba(17,_17,_26,_0.1)_0px_0px_16px]">
+        <header className="fixed left-0 top-0 z-10 flex h-20 w-full items-center justify-between bg-white px-4 text-darkGray shadow-[rgba(17,_17,_26,_0.1)_0px_0px_16px]">
             <div className="flex flex-col">
                 <h1 className="text-2xl font-bold">{title}</h1>
 
@@ -19,7 +25,16 @@ export function RoomHeader({ title }: { title: string }) {
                 </div>
             </div>
 
-            <button className="text-darkGray/40 border-darkGray/10 flex h-10 w-10 flex-col items-center justify-center rounded-full border">
+            <button
+                onClick={() => {
+                    const response = window.confirm("Tem certeza que quer sair?");
+                    if (response) {
+                        logout();
+                        router.push("/");
+                    }
+                }}
+                className="flex h-10 w-10 flex-col items-center justify-center rounded-full border border-darkGray/10 text-darkGray/40"
+            >
                 <LogOut className="translate-x-[1px]" height={18} />
             </button>
         </header>
