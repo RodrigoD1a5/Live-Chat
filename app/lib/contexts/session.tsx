@@ -1,16 +1,17 @@
 "use client";
 
+import { useCookies } from "next-client-cookies";
 import { createContext, useCallback, useEffect, useState } from "react";
-import { User } from "../definitions";
+import { Session } from "../definitions";
 
 export type SessionContextValue = {
-    user: User | null;
-    updateSession(props: User | null): void;
+    session: Session | null;
+    logout(): void;
 };
 
 export const SessionContext = createContext<SessionContextValue>({
-    user: null,
-    updateSession: () => { },
+    session: null,
+    logout: () => { },
 });
 
 export function SessionContextProvider({
@@ -18,27 +19,22 @@ export function SessionContextProvider({
 }: {
     children: React.ReactNode;
 }) {
-    const [user, setUser] = useState<SessionContextValue["user"]>({
-        id: "2",
-        email: "",
-        name: "samuel",
-    });
+    const [session, setSession] = useState<SessionContextValue["session"]>(null);
+    const cookie = useCookies();
 
     useEffect(() => {
-        const localSession = localStorage.getItem("session");
-        if (localSession) setUser(JSON.parse(localSession));
+        const sessionData = cookie.get("session");
+        if (sessionData) setSession(JSON.parse(sessionData));
+        // eslint-disable-next-line
     }, []);
 
-    const updateSession = useCallback<SessionContextValue["updateSession"]>(
-        (value) => {
-            localStorage.setItem("session", JSON.stringify(value));
-            setUser(null);
-        },
-        [setUser],
-    );
+    const logout = useCallback<SessionContextValue["logout"]>(() => {
+        cookie.remove("session");
+        setSession(null);
+    }, [setSession, cookie]);
 
     return (
-        <SessionContext.Provider value={{ user, updateSession }}>
+        <SessionContext.Provider value={{ session, logout }}>
             {children}
         </SessionContext.Provider>
     );

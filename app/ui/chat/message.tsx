@@ -1,15 +1,15 @@
-"use client";
 import clsx from "clsx";
 import dayjs from "dayjs";
+import { useContext } from "react";
 
 import { SessionContext } from "@/app/lib/contexts/session";
 import { Message } from "@/app/lib/definitions";
-import { useContext } from "react";
 
 export function ChatMessage({ user, content, createdAt }: Message) {
-    const { user: currentUser } = useContext(SessionContext);
+    const { session } = useContext(SessionContext);
 
-    const isFromCurrentUser = user.id === currentUser?.id;
+    const isFromCurrentUser = user.id === session?.userId;
+
     return (
         <div
             className={clsx("flex items-end justify-start gap-3", {
@@ -26,7 +26,7 @@ export function ChatMessage({ user, content, createdAt }: Message) {
                         {
                             "rounded-r-3xl rounded-bl-md rounded-tl-3xl bg-white":
                                 !isFromCurrentUser,
-                            "bg-lightBlue rounded-l-3xl rounded-br-md rounded-tr-3xl text-white":
+                            "rounded-l-3xl rounded-br-md rounded-tr-3xl bg-lightBlue text-white":
                                 isFromCurrentUser,
                         },
                     )}
