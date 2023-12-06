@@ -32,7 +32,7 @@ export default function Page() {
 
             <Link
                 href="/signin"
-                className="text-center text-sm text-darkGray/60 hover:text-darkGray hover:underline"
+                className="text-center text-sm text-slate-500 transition-colors hover:text-slate-800 hover:underline md:text-base"
             >
                 Já tenho uma conta.
             </Link>

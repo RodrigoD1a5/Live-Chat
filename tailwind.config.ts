@@ -12,7 +12,7 @@ const config: Config = {
                 lightBlue: "#5762e1",
                 lightPurple: "#9c6ce8",
                 lightGray: "#f6f8fa",
-                darkGray: "#181819",
+
             },
         },
     },

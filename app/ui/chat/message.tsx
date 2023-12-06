@@ -37,7 +37,7 @@ export function ChatMessage({ user, content, createdAt }: Message) {
                     })}
                 >
                     <strong>{isFromCurrentUser ? "You" : user.name}</strong>
-                    <div className="h-2 w-2 rounded-full bg-black/10" />
+                    <div className="h-2 w-2 rounded-full bg-slate-300" />
                     {dayjs(createdAt).format("hh:mm")}
                 </span>
             </div>

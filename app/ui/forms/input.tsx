@@ -3,7 +3,7 @@ export function Input(props: React.InputHTMLAttributes<HTMLInputElement>) {
         <input
             required
             {...props}
-            className="placeholder:text-darkGray/50 border-darkGray/10 rounded-md border px-4 py-2 outline-none"
+            className="rounded-md border border-slate-300 px-4 py-2 outline-none placeholder:text-slate-400"
         />
     );
 }

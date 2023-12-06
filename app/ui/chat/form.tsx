@@ -51,7 +51,7 @@ export function ChatForm() {
                     type="text"
                     name="content"
                     placeholder="Escreva uma mensagem..."
-                    className="flex-1 rounded-full border border-darkGray/10 bg-lightGray px-4 py-2 outline-none placeholder:text-darkGray/50"
+                    className="flex-1 rounded-full border border-slate-300 bg-lightGray px-4 py-2 outline-none placeholder:text-slate-400"
                 />
 
                 <button

@@ -23,7 +23,7 @@ export default function Page() {
 
             <Link
                 href="/signup"
-                className="text-darkGray/60 hover:text-darkGray text-center text-sm hover:underline"
+                className="text-center text-sm text-slate-500 transition-colors hover:text-slate-800 hover:underline md:text-base"
             >
                 Não tenho uma conta.
             </Link>

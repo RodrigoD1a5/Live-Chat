@@ -9,7 +9,7 @@ export default function Page() {
             <RoomHeader title="Global Room" />
 
             <ChatContextProvider>
-                <main className="flex h-screen w-full flex-col items-center text-darkGray">
+                <main className="flex h-screen w-full flex-col items-center text-slate-800">
                     <ChatList />
                     <ChatForm />
                 </main>
