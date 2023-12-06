@@ -1,5 +1,6 @@
 import { ChatForm } from "../ui/chat/form";
 import { ChatMessage } from "../ui/chat/message";
+import { RoomHeader } from "../ui/room/header";
 
 const mock = [
     {
@@ -26,23 +27,26 @@ const mock = [
 
 export default function Page() {
     return (
-        <main className="text-darkGray flex h-screen w-full flex-col items-center">
-            <ul className="flex flex-1 flex-col gap-6 overflow-y-scroll p-4">
-                <li>
-                    <ChatMessage {...mock[0]} />
-                </li>
-                <li>
-                    <ChatMessage {...mock[1]} />
-                </li>
-                <li>
-                    <ChatMessage {...mock[0]} />
-                </li>
-                <li>
-                    <ChatMessage {...mock[1]} />
-                </li>
-            </ul>
+        <>
+            <RoomHeader title="Global Room" />
+            <main className="text-darkGray flex h-screen w-full flex-col items-center">
+                <ul className="flex flex-1 flex-col gap-6 overflow-y-scroll px-4 pb-8 pt-28">
+                    <li>
+                        <ChatMessage {...mock[0]} />
+                    </li>
+                    <li>
+                        <ChatMessage {...mock[1]} />
+                    </li>
+                    <li>
+                        <ChatMessage {...mock[0]} />
+                    </li>
+                    <li>
+                        <ChatMessage {...mock[1]} />
+                    </li>
+                </ul>
 
-            <ChatForm />
-        </main>
+                <ChatForm />
+            </main>
+        </>
     );
 }
