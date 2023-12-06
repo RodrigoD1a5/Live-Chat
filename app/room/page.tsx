@@ -6,9 +6,8 @@ import { RoomHeader } from "../ui/room/header";
 export default function Page() {
     return (
         <>
-            <RoomHeader title="Global Room" />
-
             <ChatContextProvider>
+                <RoomHeader title="Global Room" />
                 <main className="flex h-screen w-full flex-col items-center text-slate-800">
                     <ChatList />
                     <ChatForm />
