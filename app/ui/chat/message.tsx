@@ -7,16 +7,20 @@ import { Message } from "@/app/lib/definitions";
 export function ChatMessage({ user, content, createdAt }: Message) {
     const { session } = useContext(SessionContext);
     const isFromCurrentUser = user.id === session?.user.id;
+
     return (
         <div
-            className={clsx("flex items-end justify-start gap-3", {
-                "flex-row-reverse": isFromCurrentUser,
-            })}
+            className={clsx(
+                "animate-duration-300 flex items-end justify-start gap-3",
+                {
+                    "animate-fade-right": !isFromCurrentUser,
+                    "animate-fade-left flex-row-reverse": isFromCurrentUser,
+                },
+            )}
         >
             <div className="mb-4 hidden h-10 w-10 flex-shrink-0 items-center justify-center overflow-hidden rounded-full bg-black/50 font-bold text-white md:flex">
                 {user.name.charAt(0).toUpperCase()}
             </div>
-
             <div className="flex w-fit flex-col gap-1">
                 <p
                     className={clsx(
@@ -24,7 +28,7 @@ export function ChatMessage({ user, content, createdAt }: Message) {
                         {
                             "rounded-r-3xl rounded-bl-md rounded-tl-3xl bg-white":
                                 !isFromCurrentUser,
-                            "self-end rounded-l-3xl rounded-br-md rounded-tr-3xl bg-lightBlue text-white":
+                            "self-end rounded-l-3xl rounded-br-md rounded-tr-3xl bg-lightBlue text-white selection:bg-white/70 selection:text-lightBlue":
                                 isFromCurrentUser,
                         },
                     )}

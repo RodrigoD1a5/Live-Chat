@@ -12,9 +12,18 @@ export default function Page() {
 
     return (
         <>
-            <form action={dispatch} className="flex flex-col gap-2">
+            <form
+                action={dispatch}
+                className="animate-fade-up animate-duration-300 flex flex-col gap-2"
+            >
                 <Input name="email" type="email" placeholder="email" />
-                <Input name="password" type="password" placeholder="senha" />
+                <Input
+                    name="password"
+                    type="password"
+                    min={6}
+                    max={16}
+                    placeholder="senha"
+                />
 
                 <Submit>Entrar</Submit>
             </form>

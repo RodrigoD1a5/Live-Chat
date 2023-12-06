@@ -32,7 +32,7 @@ export function RoomHeader({ title }: { title: string }) {
                             router.push("/");
                         }
                     }}
-                    className="flex h-10 w-10 flex-col items-center justify-center rounded-full border border-slate-300 text-slate-400"
+                    className="flex h-10 w-10 flex-col items-center justify-center rounded-full border border-slate-300 text-slate-400 transition-colors hover:border-red-500 hover:text-red-500"
                 >
                     <LogOut className="translate-x-[1px]" height={18} />
                 </button>
