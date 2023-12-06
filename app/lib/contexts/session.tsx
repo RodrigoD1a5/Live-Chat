@@ -5,37 +5,37 @@ import { createContext, useCallback, useEffect, useState } from "react";
 import { Session } from "../definitions";
 
 export type SessionContextValue = {
-    session: Session | null;
-    logout(): void;
+  session: Session | null;
+  logout(): void;
 };
 
 export const SessionContext = createContext<SessionContextValue>({
-    session: null,
-    logout: () => { },
+  session: null,
+  logout: () => {},
 });
 
 export function SessionContextProvider({
-    children,
+  children,
 }: {
-    children: React.ReactNode;
+  children: React.ReactNode;
 }) {
-    const [session, setSession] = useState<SessionContextValue["session"]>(null);
-    const cookie = useCookies();
+  const [session, setSession] = useState<SessionContextValue["session"]>(null);
+  const cookie = useCookies();
 
-    useEffect(() => {
-        const sessionData = cookie.get("session");
-        if (sessionData) setSession(JSON.parse(sessionData));
-        // eslint-disable-next-line
-    }, []);
+  useEffect(() => {
+    const sessionData = cookie.get("session");
+    if (sessionData) setSession(JSON.parse(sessionData));
+    // eslint-disable-next-line
+  }, []);
 
-    const logout = useCallback<SessionContextValue["logout"]>(() => {
-        cookie.remove("session");
-        setSession(null);
-    }, [setSession, cookie]);
+  const logout = useCallback<SessionContextValue["logout"]>(() => {
+    cookie.remove("session");
+    setSession(null);
+  }, [setSession, cookie]);
 
-    return (
-        <SessionContext.Provider value={{ session, logout }}>
-            {children}
-        </SessionContext.Provider>
-    );
+  return (
+    <SessionContext.Provider value={{ session, logout }}>
+      {children}
+    </SessionContext.Provider>
+  );
 }
