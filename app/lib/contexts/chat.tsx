@@ -1,5 +1,4 @@
 "use client";
-
 import {
   createContext,
   useCallback,
@@ -8,24 +7,24 @@ import {
   useState,
 } from "react";
 
-import { Message } from "../definitions";
+import { Draft, Message } from "../definitions";
 import { selectRandomColor } from "../utils/selectRandomColor";
+import { SessionContext } from "./session";
 import { SocketContext } from "./socket";
 
 export type ChatContextValue = {
   messages: Set<Message>;
   colorMapping: Map<string, string>;
   onlineUsersCount: number;
-  sendMessage(draft: Omit<Message, "id">): void;
+  sendMessage(draft: Draft): void;
 };
 
 export const ChatContext = createContext<ChatContextValue>({
   messages: new Set(),
   colorMapping: new Map(),
   onlineUsersCount: 0,
-  sendMessage: () => {},
+  sendMessage: () => { },
 });
-
 export function ChatContextProvider({
   children,
 }: {
@@ -38,6 +37,7 @@ export function ChatContextProvider({
   );
 
   const { socket } = useContext(SocketContext);
+  const { session } = useContext(SessionContext);
 
   const addMessageToLocalSet = useCallback(
     (message: Message) => {
@@ -48,18 +48,27 @@ export function ChatContextProvider({
 
   const sendMessage = useCallback<ChatContextValue["sendMessage"]>(
     (draft) => {
-      if (socket) {
+      if (socket && session) {
         socket.emit("message", JSON.stringify(draft));
 
-        const message = {
+        const message: Message = {
           id: new Date().getTime().toString(),
-          ...draft,
+          content: draft.content,
+          createdAt: new Date().toISOString(),
+          user: {
+            id: session.user.id,
+            name: session.user.name,
+          },
+          room: {
+            id: session.user.id,
+            name: session.user.name,
+          },
         };
 
         addMessageToLocalSet(message);
       }
     },
-    [addMessageToLocalSet, socket],
+    [addMessageToLocalSet, socket, session],
   );
 
   useEffect(() => {
@@ -67,22 +76,18 @@ export function ChatContextProvider({
       socket.on("chat", (data: string) => {
         const message = JSON.parse(data) as Message;
         const userId = message.user.id;
-
         if (!colorMapping.has(userId)) {
           const color = selectRandomColor();
           setColorMapping(new Map(colorMapping.set(userId, color)));
         }
-
         addMessageToLocalSet(message);
       });
-
       socket.on("online", (data: string) => {
         const { count } = JSON.parse(data) as { count: number };
         setOnlineUsersCount(count);
       });
     }
   }, [addMessageToLocalSet, colorMapping, socket]);
-
   return (
     <ChatContext.Provider
       value={{
