@@ -1,14 +1,13 @@
+"use client";
 import clsx from "clsx";
 import dayjs from "dayjs";
 import { useContext } from "react";
-
 import { SessionContext } from "@/app/lib/contexts/session";
 import { Message } from "@/app/lib/definitions";
-
 export function ChatMessage({ user, content, createdAt }: Message) {
     const { session } = useContext(SessionContext);
 
-    const isFromCurrentUser = user.id === session?.userId;
+    const isFromCurrentUser = user.id === session?.user.id;
 
     return (
         <div

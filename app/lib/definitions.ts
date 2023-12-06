@@ -4,7 +4,6 @@ export interface User {
     email: string;
     avatar?: string;
 }
-
 export interface Message {
     id: string;
     user: Omit<User, "email">;
@@ -13,6 +12,9 @@ export interface Message {
 }
 
 export interface Session {
-    userId: string;
+    user: {
+        id: string;
+        name: string;
+    };
     token: string;
 }

@@ -1,14 +1,16 @@
 "use client";
 
-import { createContext, useState } from "react";
+import { createContext, useCallback, useState } from "react";
 import { Message } from "../definitions";
 
 export type ChatContextValue = {
     messages: Set<Message>;
+    addMessage(message: Message): void;
 };
 
 export const ChatContext = createContext<ChatContextValue>({
     messages: new Set(),
+    addMessage: () => { },
 });
 
 const mockMessages = new Set([
@@ -25,7 +27,7 @@ const mockMessages = new Set([
     {
         id: "2",
         user: {
-            id: "user-1",
+            id: "874faec2-cc31-4bf4-8999-4d33ac5a3ca8",
             name: "Samuel",
         },
         content:
@@ -33,7 +35,6 @@ const mockMessages = new Set([
         createdAt: new Date().toISOString(),
     },
 ]);
-
 export function ChatContextProvider({
     children,
 }: {
@@ -42,7 +43,16 @@ export function ChatContextProvider({
     const [messages, setMessages] =
         useState<ChatContextValue["messages"]>(mockMessages);
 
+    const addMessage = useCallback<ChatContextValue["addMessage"]>(
+        (message) => {
+            setMessages(new Set(messages.add(message)));
+        },
+        [setMessages, messages],
+    );
+
     return (
-        <ChatContext.Provider value={{ messages }}>{children}</ChatContext.Provider>
+        <ChatContext.Provider value={{ messages, addMessage }}>
+            {children}
+        </ChatContext.Provider>
     );
 }
